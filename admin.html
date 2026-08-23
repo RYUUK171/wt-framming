@@ -272,26 +272,35 @@ async function showDashboard() {
 document.getElementById("loginForm").addEventListener("submit", async event => {
     event.preventDefault();
 
-    const email = document.getElementById("loginEmail").value.trim();
-    const password = document.getElementById("loginPassword").value;
+    const email = document
+        .getElementById("loginEmail")
+        .value
+        .trim();
+
+    const password = document
+        .getElementById("loginPassword")
+        .value;
 
     const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password
+        email: email,
+        password: password
     });
 
     if (error) {
-        alert(error.message);
+        alert("Login error: " + error.message);
         return;
     }
 
-    if (!(await isAdmin())) {
+    const admin = await isAdmin();
+
+    if (!admin) {
         await supabase.auth.signOut();
         alert("Access denied. This account is not an administrator.");
         return;
     }
 
-    showDashboard();
+    alert("Login successful!");
+    await showDashboard();
 });
 
 async function logout() {
