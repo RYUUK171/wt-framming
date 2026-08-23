@@ -399,10 +399,7 @@ async function isAdmin() {
         return false;
     }
 
-    return (
-        data.user.email.toLowerCase() === ADMIN_EMAIL
-    );
-}
+    return data.user.email?.toLowerCase().trim() === ADMIN_EMAIL.toLowerCase().trim();
 
 
 /* ==========================================
